@@ -15,7 +15,6 @@ import { useLocation } from "react-router-dom";
 import { Layout, Drawer, Affix } from "antd";
 import Sidenav from "./Sidenav";
 import Header from "./Header";
-import Footer from "./Footer";
 
 const { Header: AntHeader, Content, Sider } = Layout;
 
@@ -81,9 +80,7 @@ function Main({ children }) {
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
+        onCollapse={(collapsed, type) => {}}
         trigger={null}
         width={250}
         theme="light"
@@ -121,7 +118,6 @@ function Main({ children }) {
           </AntHeader>
         )}
         <Content className="content-ant">{children}</Content>
-        <Footer />
       </Layout>
     </Layout>
   );
