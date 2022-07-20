@@ -263,59 +263,7 @@ function Header({
   const showDrawer = () => setVisible(true);
   const hideDrawer = () => setVisible(false);
 
-  return (
-    <>
-      <Row gutter={[24, 0]}>
-        <Col span={24} md={6}>
-          <Breadcrumb>
-            <Breadcrumb.Item>
-              <NavLink to="/">Pages</NavLink>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item style={{ textTransform: "capitalize" }}>
-              {name.replace("/", "")}
-            </Breadcrumb.Item>
-          </Breadcrumb>
-          <div className="ant-page-header-heading">
-            <span
-              className="ant-page-header-heading-title"
-              style={{ textTransform: "capitalize" }}
-            >
-              {subName.replace("/", "")}
-            </span>
-          </div>
-        </Col>
-        <Col span={24} md={18} className="header-control">
-          {/* <Badge size="small" count={4}>
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <a
-                href="#pablo"
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
-                {bell}
-              </a>
-            </Dropdown>
-          </Badge> */}
-          <Button
-            type="link"
-            className="sidebar-toggler"
-            onClick={() => onPress()}
-          >
-            {toggler}
-          </Button>
-          {/* <Link to="/sign-in" className="btn-sign-in">
-            {profile}
-            <span>Sign in</span>
-          </Link> */}
-          <Input
-            className="header-search"
-            placeholder="Type here..."
-            prefix={<SearchOutlined />}
-          />
-        </Col>
-      </Row>
-    </>
-  );
+  return <></>;
 }
 
 export default Header;

@@ -155,7 +155,7 @@ const Orders = () => {
                 columns={columns}
                 dataSource={orders}
                 pagination={false}
-                className="ant-border-space"
+                className="ant-border-space mt-10"
               />
             </div>
           </Col>
