@@ -1,108 +1,115 @@
-import { Row, Col, Card, Table, Typography } from "antd";
-import { FaTrashAlt } from "react-icons/fa";
-import { MdModeEdit } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { getOrders } from "../Services";
-
-const { Title } = Typography;
+import { FaCheck, FaPlus } from "react-icons/fa";
+import { ImCross } from "react-icons/im";
+import { Row, Col, Table, Button, Modal, Form, Input } from "antd";
+import TextArea from "antd/lib/input/TextArea";
 
 // table code start
 const columns = [
   {
     title: "Name",
-    dataIndex: "name",
-    key: "name",
+    key: "user_name",
     width: "10%",
+    render: (record) => <p>{record.attributes.user_name}</p>,
   },
   {
     title: "Email",
-    dataIndex: "email",
-    key: "email",
+    key: "user_email",
+    render: (record) => <p>{record.attributes.user_email}</p>,
   },
 
   {
-    title: "Food Items",
-    key: "items",
-    dataIndex: "items",
+    title: "Order Details",
+    key: "food_items",
+    render: (record) => {
+      return (
+        <Row gutter={12} type="flex">
+          {record.attributes.food_items.map((item) => {
+            return (
+              <>
+                <Col>{item.food_item_name}</Col>
+                <Col>{`$ ${item.food_item_price}`}</Col>
+                <Col>{item.food_item_qty}</Col>
+              </>
+            );
+          })}
+          <Col>
+            {record.attributes.food_items
+              .reduce((acc, foodItem) => {
+                return acc + foodItem.food_item_price * foodItem.food_item_qty;
+              }, 0)
+              .toFixed(2)}
+          </Col>
+        </Row>
+      );
+    },
   },
+
   {
-    title: "User Phone Number",
-    key: "user_phone",
-    dataIndex: "user_phone",
+    title: "Phone",
+    key: "user_phone_number",
+    render: (record) => <p>{record.attributes.user_phone_number}</p>,
   },
   {
     title: "Status",
     key: "status",
-    dataIndex: "status",
+    render: (record) => <p>{record.attributes.status}</p>,
   },
   {
     title: "Actions",
     key: "action",
-    dataIndex: "action",
-  },
-];
-
-const data = [
-  {
-    key: "1",
-    name: (
-      <>
-        <div className="avatar-info">
-          <Title level={5}>Name </Title>
-        </div>
-      </>
-    ),
-    email: (
-      <>
-        <div className="author-info">
-          <Title level={5}>support@gmail.com</Title>
-        </div>
-      </>
-    ),
-
-    items: (
-      <>
-        <div className="ant-employed">
-          <span>Chinese, italian, indian</span>
-        </div>
-      </>
-    ),
-    user_phone: (
-      <>
-        <div className="ant-employed">
-          <span>1234567890</span>
-        </div>
-      </>
-    ),
-    status: (
-      <>
-        <div className="ant-employed">
-          <span>Pending</span>
-        </div>
-      </>
-    ),
-    action: (
-      <>
+    render: (record) => {
+      return (
         <div>
           <span>
-            <a style={{ marginRight: "5px" }} href="#">
-              <MdModeEdit size={18} />
+            <a
+              href="#"
+              size="small"
+              type="link"
+              style={{ marginRight: "5px", color: "#019a16" }}
+              onClick={() => handleAcceptOrders()}
+            >
+              <FaCheck size={18} />
             </a>
-            <a style={{ marginLeft: "5px" }} href="#">
-              <FaTrashAlt size={18} />
+            <a
+              href="#"
+              size="small"
+              type="link"
+              onClick={() => handleRejectOrders()}
+              style={{ color: "#f00" }}
+            >
+              <ImCross size={16} />
             </a>
           </span>
         </div>
-      </>
-    ),
+      );
+    },
   },
 ];
+const handleAcceptOrders = () => {
+  // Todo
+};
+
+const handleRejectOrders = () => {
+  // todo
+};
 
 const Orders = () => {
+  const [orders, setOrders] = useState([]);
   // fetch the orders
   const fetchOrders = () => {
     getOrders().then((response) => {
       console.log(response);
+      if (
+        response &&
+        response.data &&
+        response.data.data &&
+        response.data.data.length > 0
+      ) {
+        const orderList = response.data.data;
+        setOrders(orderList);
+      }
     });
   };
 
@@ -114,20 +121,43 @@ const Orders = () => {
       <div className="tabled">
         <Row gutter={[24, 0]}>
           <Col xs="24" xl={24}>
-            <Card
-              bordered={false}
-              className="criclebox tablespace mb-24"
-              title="Orders Table"
-            >
-              <div className="table-responsive">
-                <Table
-                  columns={columns}
-                  dataSource={data}
-                  pagination={false}
-                  className="ant-border-space"
-                />
-              </div>
-            </Card>
+            <Row justify="space-between" align="center">
+              <Col>
+                <h2>Orders Table</h2>
+              </Col>
+              <Col>
+                <Button type="primary" size="small">
+                  <FaPlus type="plus" />
+                  Add orders
+                </Button>
+
+                <Modal title="Add food category" okText="Save">
+                  <Form>
+                    <Form.Item>
+                      <Input size="small" placeholder="Food item name" />
+                    </Form.Item>
+                    <Form.Item>
+                      <TextArea
+                        size="small"
+                        placeholder="Description..."
+                        rows={3}
+                      />
+                    </Form.Item>
+                    <Form.Item>
+                      <Input size="small" placeholder="Price" />
+                    </Form.Item>
+                  </Form>
+                </Modal>
+              </Col>
+            </Row>
+            <div className="table-responsive">
+              <Table
+                columns={columns}
+                dataSource={orders}
+                pagination={false}
+                className="ant-border-space"
+              />
+            </div>
           </Col>
         </Row>
       </div>

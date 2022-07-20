@@ -303,10 +303,10 @@ function Header({
           >
             {toggler}
           </Button>
-          <Link to="/sign-in" className="btn-sign-in">
+          {/* <Link to="/sign-in" className="btn-sign-in">
             {profile}
             <span>Sign in</span>
-          </Link>
+          </Link> */}
           <Input
             className="header-search"
             placeholder="Type here..."

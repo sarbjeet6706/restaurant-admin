@@ -28,10 +28,32 @@ export const getReservations = () => {
     headers: getAuthHeaders(),
   });
 };
-
-export const getFoodItems = () => {
+export const addFoodItems = (params) => {
   const url = `${process.env.REACT_APP_SERVER_URL}/food-items`;
+  return axios.post(url, params, {
+    headers: getAuthHeaders(),
+  });
+};
+export const getFoodItems = () => {
+  const url = `${process.env.REACT_APP_SERVER_URL}/food-items?populate=categories`;
   return axios.get(url);
+};
+
+export const deleteMenu = (id) => {
+  const url = `${process.env.REACT_APP_SERVER_URL}/orders?id=${id}`;
+  return axios.delete(url);
+};
+
+export const deleteOrders = (id) => {
+  const url = `${process.env.REACT_APP_SERVER_URL}/orders?id=${id}`;
+  return axios.delete(url);
+};
+
+export const updateFoodItems = (params, id) => {
+  const url = `${process.env.REACT_APP_SERVER_URL}/food-items/${id}`;
+  return axios.put(url, params, {
+    headers: getAuthHeaders(),
+  });
 };
 
 /**

@@ -1,146 +1,126 @@
-import { Row, Col, Card, Table, message, Typography } from "antd";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt, FaPlus } from "react-icons/fa";
 import { MdModeEdit } from "react-icons/md";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { getReservations } from "../Services";
-
-const { Title } = Typography;
+import { Row, Col, Table, Button, Modal, Form, Input } from "antd";
+import TextArea from "antd/lib/input/TextArea";
 
 // table code start
 const columns = [
   {
     title: "Name",
-    dataIndex: "name",
-    key: "name",
+    key: "user_name",
     width: "10%",
+    render: (record) => <p>{record.attributes.user_name}</p>,
   },
   {
     title: "Email",
-    dataIndex: "email",
-    key: "email",
+    key: "user_email",
+    render: (record) => <p>{record.attributes.user_email}</p>,
   },
 
   {
     title: "Phone",
-    key: "phone",
-    dataIndex: "phone",
+    key: "user_phone_number",
+    render: (record) => <p>{record.attributes.user_phone_number}</p>,
   },
   {
     title: "Reservation Date",
-    key: "res_date",
-    dataIndex: "res_date",
+    key: "reservation_date",
+    render: (record) => <p>{record.attributes.reservation_date}</p>,
   },
   {
     title: "Reservation Time",
-    key: "res_time",
-    dataIndex: "res_time",
+    key: "reservation_time",
+    render: (record) => <p>{record.attributes.reservation_time}</p>,
   },
   {
     title: "No. of guests",
-    key: "guests",
-    dataIndex: "guests",
+    key: "no_of_guests",
+    render: (record) => <p>{record.attributes.no_of_guests}</p>,
   },
   {
     title: "Status",
-    key: "status",
-    dataIndex: "status",
+    key: "order_status",
+    render: (record) => <p>{record.attributes.order_status}</p>,
   },
   {
     title: "Actions",
     key: "action",
-    dataIndex: "action",
-  },
-];
-
-const data = [
-  {
-    key: "1",
-    name: (
-      <>
-        <div className="avatar-info">
-          <Title level={5}>Name</Title>
-        </div>
-      </>
-    ),
-    email: (
-      <>
-        <div className="author-info">
-          <Title level={5}>support@gmail.com</Title>
-        </div>
-      </>
-    ),
-
-    res_date: (
-      <>
-        <div className="ant-employed">
-          <span>07-07-22</span>
-        </div>
-      </>
-    ),
-    res_time: (
-      <>
-        <div className="ant-employed">
-          <span>4:30 p.m.</span>
-        </div>
-      </>
-    ),
-    guests: (
-      <>
-        <div className="ant-employed">
-          <span>2</span>
-        </div>
-      </>
-    ),
-    status: (
-      <>
-        <div className="ant-employed">
-          <span>Pending</span>
-        </div>
-      </>
-    ),
-    action: (
-      <div>
-        <span>
-          <a style={{ marginRight: "5px" }} href="#">
+    render: (record) => {
+      return (
+        <>
+          <a href="#">
             <MdModeEdit size={18} />
           </a>
-          <a style={{ marginLeft: "5px" }} href="#">
-            <FaTrashAlt size={18} />
+          <a style={{ marginLeft: "5px", color: "#f00" }} href="#">
+            <FaTrashAlt size={16} />
           </a>
-        </span>
-      </div>
-    ),
+        </>
+      );
+    },
   },
 ];
-
 const Reservation = () => {
+  const [reservations, setReservations] = useState([]);
+
   useEffect(() => {
     fetchReservationData();
   }, []);
+
+  //fetch the data from the api
   const fetchReservationData = () => {
-    getReservations().then((response) => {
-      console.log("Reservation data", response);
+    getReservations().then((res) => {
+      console.log(res);
+      if (res && res.data && res.data.data && res.data.data.length > 0) {
+        const reservationData = res.data.data;
+        setReservations(reservationData);
+      }
     });
   };
+
   return (
     <>
       <div className="tabled">
         <Row gutter={[24, 0]}>
           <Col xs="24" xl={24}>
-            <Card
-              bordered={false}
-              className="criclebox tablespace mb-24"
-              title="Reservation Table"
-            >
-              <div className="table-responsive">
-                <Table
-                  columns={columns}
-                  dataSource={data}
-                  pagination={false}
-                  className="ant-border-space"
-                />
-              </div>
-            </Card>
+            <Row justify="space-between" align="center">
+              <Col>
+                <h2>Reservation Table</h2>
+              </Col>
+              <Col>
+                <Button type="primary" size="small">
+                  <FaPlus type="plus" />
+                  Add reservations
+                </Button>
+
+                <Modal title="Add food category" okText="Save">
+                  <Form>
+                    <Form.Item>
+                      <Input size="small" placeholder="Food item name" />
+                    </Form.Item>
+                    <Form.Item>
+                      <TextArea
+                        size="small"
+                        placeholder="Description..."
+                        rows={3}
+                      />
+                    </Form.Item>
+                    <Form.Item>
+                      <Input size="small" placeholder="Price" />
+                    </Form.Item>
+                  </Form>
+                </Modal>
+              </Col>
+            </Row>
+            <div className="table-responsive">
+              <Table
+                columns={columns}
+                dataSource={reservations}
+                pagination={false}
+                className="ant-border-space"
+              />
+            </div>
           </Col>
         </Row>
       </div>

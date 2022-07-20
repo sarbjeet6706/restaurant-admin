@@ -1,16 +1,5 @@
 import React, { Component } from "react";
-import { Link, useHistory } from "react-router-dom";
-import {
-  Layout,
-  Menu,
-  Button,
-  Row,
-  Col,
-  Typography,
-  Form,
-  Input,
-  Switch,
-} from "antd";
+import { Layout, Button, Row, Col, Typography, Form, Input } from "antd";
 import signinbg from "../assets/images/img-signin.jpg";
 import { signIn } from "../Services";
 
