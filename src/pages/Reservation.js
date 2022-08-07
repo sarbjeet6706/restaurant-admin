@@ -17,8 +17,9 @@ import {
   Space,
   Dropdown,
   Menu,
+  notification,
 } from "antd";
-import { toast } from "react-toastify";
+
 import confirm from "antd/lib/modal/confirm";
 import { DownOutlined } from "@ant-design/icons";
 
@@ -124,7 +125,11 @@ const Reservation = () => {
       };
       updateReservation(record.id, param).then((res) => {
         if (res.data) {
-          toast.success("Order status has been confirmed successfully!");
+          notification.success({
+            message: "Success",
+            description: "Order status has been confirmed successfully!",
+          });
+
           fetchReservationData(pageNo);
         }
       });
@@ -136,7 +141,11 @@ const Reservation = () => {
         onOk() {
           deleteReservation(record.id).then((res) => {
             if (res.data) {
-              toast.success("Order has been removed from your table!");
+              notification.success({
+                message: "Success",
+                description: "Order has been removed successfully!",
+              });
+
               fetchReservationData(pageNo);
             }
           });

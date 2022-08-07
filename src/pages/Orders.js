@@ -10,8 +10,9 @@ import {
   Dropdown,
   Button,
   Space,
+  notification,
 } from "antd";
-import { toast } from "react-toastify";
+
 import confirm from "antd/lib/modal/confirm";
 import { DownOutlined } from "@ant-design/icons";
 import OrderDetailsModal from "./OrderDetailModal";
@@ -101,7 +102,11 @@ const Orders = () => {
       };
       updateOrder(record.id, param).then((res) => {
         if (res.data) {
-          toast.success("Order status has been confirmed successfully!");
+          notification.success({
+            message: "Success",
+            description: "Order status has been confirmed successfully!",
+          });
+
           fetchOrders(pageNumber);
         }
       });
@@ -113,7 +118,11 @@ const Orders = () => {
         onOk() {
           deleteOrder(record.id).then((res) => {
             if (res.data) {
-              toast.success("Order has been removed from your table!");
+              notification.success({
+                message: "Success",
+                description: "Order has been removed successfully!",
+              });
+
               fetchOrders(pageNumber);
             }
           });

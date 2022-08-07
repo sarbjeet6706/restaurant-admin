@@ -7,14 +7,12 @@ import Main from "./components/layout/Main";
 import "antd/dist/antd.css";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import PrivateRoute from "./PrivateRoute";
 
 function App() {
   return (
     <div className="App">
-      <ToastContainer hideProgressBar={true} />
       <Switch>
         <Route path="/" exact component={SignIn} />
         <Main>

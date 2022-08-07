@@ -9,6 +9,7 @@ import {
   Select,
   Spin,
   Pagination,
+  notification,
 } from "antd";
 
 import { FaPlus } from "react-icons/fa";
@@ -22,7 +23,7 @@ import {
 } from "../Services";
 import React, { useState } from "react";
 import TextArea from "antd/lib/input/TextArea";
-import { toast } from "react-toastify";
+
 import confirm from "antd/lib/modal/confirm";
 const { Option } = Select;
 
@@ -156,7 +157,10 @@ const Home = () => {
     };
     updateFoodItems(params, selectedItemId).then((res) => {
       if (res.data) {
-        toast.success("Food item has been updated successfully");
+        notification.success({
+          message: "Success",
+          description: "Food item has been updated successfully",
+        });
         setIsProcessing(false);
         setVisible(false);
         fetchMenuData(pageNo);
@@ -185,7 +189,10 @@ const Home = () => {
     addFoodItems(params)
       .then((res) => {
         if (res.data) {
-          toast.success("Food item has been saved successfully");
+          notification.success({
+            message: "Success",
+            description: "Food item has been saved successfully",
+          });
           resetForm();
           fetchMenuData(pageNo);
         }
@@ -204,7 +211,10 @@ const Home = () => {
       onOk() {
         deleteFoodItem(record.id).then((res) => {
           if (res.data) {
-            toast.success("Food item has been removed successfully!");
+            notification.success({
+              message: "Success",
+              description: "Food item has been removed successfully!",
+            });
             fetchMenuData(pageNo);
           }
         });
