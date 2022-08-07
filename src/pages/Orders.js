@@ -14,8 +14,83 @@ import {
 import { toast } from "react-toastify";
 import confirm from "antd/lib/modal/confirm";
 import { DownOutlined } from "@ant-design/icons";
+import OrderDetailsModal from "./OrderDetailModal";
+import moment from "moment";
 
 const Orders = () => {
+  const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [perPage] = useState(10);
+  const [showModal, setShowModal] = useState(false);
+  const [foodItems, setFoodItems] = useState([]);
+
+  // table code start
+  const columns = [
+    {
+      title: "Name",
+      key: "user_name",
+      width: "10%",
+      render: (record) => <p>{record.attributes.user_name}</p>,
+    },
+    {
+      title: "Email",
+      key: "user_email",
+      render: (record) => <p>{record.attributes.user_email}</p>,
+    },
+
+    {
+      title: "Phone",
+      key: "user_phone_number",
+      render: (record) => <p>{record.attributes.user_phone_number}</p>,
+    },
+    {
+      title: "Order Date",
+      key: "created_at",
+      render: (record) => (
+        <p>
+          {moment(record.attributes.createdAt).format("D MMM YY - hh:mm a")}
+        </p>
+      ),
+    },
+    {
+      title: "Status",
+      key: "status",
+      render: (record) => <p>{record.attributes.status}</p>,
+    },
+    {
+      title: "Details",
+      key: "details",
+      render: (record) => (
+        <div>
+          <a href="#" onClick={(e) => handleViewDetails(e, record)}>
+            View Details
+          </a>
+        </div>
+      ),
+    },
+    {
+      title: "Actions",
+      key: "action",
+      render: (record) => {
+        return (
+          <div>
+            <span>
+              <Dropdown overlay={() => menu(record)} trigger={["click"]}>
+                <Button className="ant-dropdown-link" type="primary">
+                  <Space>
+                    Actions <DownOutlined />
+                  </Space>
+                </Button>
+              </Dropdown>
+            </span>
+          </div>
+        );
+      },
+    },
+  ];
+
   // function to accept or reject the order
   const handleOrderAction = (event, record) => {
     if (event.key === "accept") {
@@ -61,86 +136,6 @@ const Orders = () => {
     );
   };
 
-  // table code start
-  const columns = [
-    {
-      title: "Name",
-      key: "user_name",
-      width: "10%",
-      render: (record) => <p>{record.attributes.user_name}</p>,
-    },
-    {
-      title: "Email",
-      key: "user_email",
-      render: (record) => <p>{record.attributes.user_email}</p>,
-    },
-
-    {
-      title: "Order Details",
-      key: "food_items",
-      render: (record) => {
-        return (
-          <Row gutter={12} type="flex">
-            {record.attributes.food_items.map((item) => {
-              return (
-                <>
-                  <Col>{item.food_item_name}</Col>
-                  <Col>{`$ ${item.food_item_price}`}</Col>
-                  <Col>{item.food_item_qty}</Col>
-                </>
-              );
-            })}
-            <Col>
-              {record.attributes.food_items
-                .reduce((acc, foodItem) => {
-                  return (
-                    acc + foodItem.food_item_price * foodItem.food_item_qty
-                  );
-                }, 0)
-                .toFixed(2)}
-            </Col>
-          </Row>
-        );
-      },
-    },
-
-    {
-      title: "Phone",
-      key: "user_phone_number",
-      render: (record) => <p>{record.attributes.user_phone_number}</p>,
-    },
-    {
-      title: "Status",
-      key: "status",
-      render: (record) => <p>{record.attributes.status}</p>,
-    },
-    {
-      title: "Actions",
-      key: "action",
-      render: (record) => {
-        return (
-          <div>
-            <span>
-              <Dropdown overlay={() => menu(record)} trigger={["click"]}>
-                <Button className="ant-dropdown-link" type="primary">
-                  <Space>
-                    Actions <DownOutlined />
-                  </Space>
-                </Button>
-              </Dropdown>
-            </span>
-          </div>
-        );
-      },
-    },
-  ];
-
-  const [orders, setOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [totalRecords, setTotalRecords] = useState(0);
-  const [perPage] = useState(10);
-
   // fetch the orders
   const fetchOrders = (currPage) => {
     setIsLoading(true);
@@ -171,9 +166,29 @@ const Orders = () => {
     fetchOrders(pageNumber);
   };
 
+  const handleViewDetails = (e, record) => {
+    if (e) e.preventDefault();
+    setFoodItems(record.attributes.food_items);
+    setTimeout(() => {
+      setShowModal(true);
+    }, 200);
+  };
+
+  const handleRefreshOrders = () => {
+    setPageNumber(1);
+    fetchOrders(1);
+  };
+
   return (
     <>
       <div className="tabled">
+        <Row type="flex" justify="end">
+          <Col>
+            <Button type="primary" onClick={handleRefreshOrders}>
+              Refresh orders
+            </Button>
+          </Col>
+        </Row>
         <Row gutter={[24, 0]}>
           <Col xs="24" xl={24}>
             <div className="table-responsive">
@@ -202,6 +217,13 @@ const Orders = () => {
             </div>
           </Col>
         </Row>
+        {showModal && (
+          <OrderDetailsModal
+            showModal={showModal}
+            setShowModal={setShowModal}
+            foodItems={foodItems}
+          />
+        )}
       </div>
     </>
   );

@@ -47,9 +47,8 @@ export const getReservations = (pageNo, perPage) => {
 
 // function to authenticate the user
 export const getAuth = () => {
-  const user = localStorage.getItem("user");
   const authToken = localStorage.getItem("Auth_token");
-  return user && authToken ? JSON.parse(user) : null;
+  return authToken ? authToken : null;
 };
 
 //update reservation api

@@ -58,29 +58,16 @@ function Sidenav({ color }) {
 
   const signout = () => {
     localStorage.removeItem("Auth_token");
-    history.push("/sign-in");
+    history.push("/");
   };
   return (
     <>
       <div className="brand">
-        <img src={logo} alt="" />
-        <span>Yak &amp; Yeti Dashboard</span>
+        {/* <img src={logo} alt="" /> */}
+        <span>Yak &amp; Yeti Admin</span>
       </div>
       <hr />
       <Menu theme="light" mode="inline">
-        <Menu.Item key="1">
-          <NavLink to="/dashboard">
-            <span
-              className="icon"
-              style={{
-                background: page === "dashboard" ? color : "",
-              }}
-            >
-              {dashboard}
-            </span>
-            <span className="label">Food Menu</span>
-          </NavLink>
-        </Menu.Item>
         <Menu.Item key="2">
           <NavLink to="/orders">
             <span
@@ -105,6 +92,19 @@ function Sidenav({ color }) {
               {tables}
             </span>
             <span className="label">Reservation</span>
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item key="1">
+          <NavLink to="/dashboard">
+            <span
+              className="icon"
+              style={{
+                background: page === "dashboard" ? color : "",
+              }}
+            >
+              {dashboard}
+            </span>
+            <span className="label">Food Menu</span>
           </NavLink>
         </Menu.Item>
 

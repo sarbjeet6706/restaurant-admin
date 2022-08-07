@@ -1,5 +1,6 @@
 import { FaTrashAlt } from "react-icons/fa";
 import { MdModeEdit } from "react-icons/md";
+import moment from "moment";
 import React, { useState, useEffect } from "react";
 import {
   deleteReservation,
@@ -44,17 +45,24 @@ const Reservation = () => {
       render: (record) => <p>{record.attributes.user_phone_number}</p>,
     },
     {
-      title: "Reservation Date",
+      title: "Reservation Date Time",
       key: "reservation_date",
       width: "10%",
-      render: (record) => <p>{record.attributes.reservation_date}</p>,
+      render: (record) => (
+        <p>
+          {record.attributes.reservation_date
+            ? moment(record.attributes.reservation_date).format("D MMM, YY")
+            : ""}{" "}
+          -{" "}
+          {record.attributes.reservation_time
+            ? moment(record.attributes.reservation_time, "HH:mm:ss.SSS").format(
+                "hh:mm a"
+              )
+            : ""}
+        </p>
+      ),
     },
-    {
-      title: "Reservation Time",
-      key: "reservation_time",
-      width: "10%",
-      render: (record) => <p>{record.attributes.reservation_time}</p>,
-    },
+
     {
       title: "Guests",
       key: "no_of_guests",
@@ -165,6 +173,13 @@ const Reservation = () => {
 
   return (
     <>
+      <Row type="flex" justify="end">
+        <Col>
+          <Button type="primary" onClick={() => onPageChange(1)}>
+            Refresh reservations
+          </Button>
+        </Col>
+      </Row>
       <div className="tabled">
         <Row gutter={[24, 0]}>
           <Col xs="24" xl={24}>

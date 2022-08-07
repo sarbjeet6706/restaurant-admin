@@ -93,7 +93,6 @@ const Home = () => {
   useEffect(() => {
     fetchMenuData(pageNo);
     fetchCategories();
-    handleAddFoodItems();
   }, []);
 
   // fetch the menu data

@@ -4,17 +4,17 @@ import { getAuth } from "./Services";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const auth = getAuth();
+  console.log("auth", auth);
   return (
     <Route
       {...rest}
       render={(props) => {
         if (auth) return <Component {...props} />;
-        if (!auth)
+        else {
           return (
-            <Redirect
-              to={{ path: "/sign-in", state: { from: props.location } }}
-            />
+            <Redirect to={{ path: "/", state: { from: props.location } }} />
           );
+        }
       }}
     />
   );

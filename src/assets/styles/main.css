@@ -3046,3 +3046,15 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
   path {
   fill: #8c8c8c;
 }
+.mt-20 {
+  margin-top: 20px;
+}
+.text-right {
+  text-align: right;
+}
+.pr-20 {
+  padding-right: 20px;
+}
+.text-bold {
+  font-weight: bold;
+}

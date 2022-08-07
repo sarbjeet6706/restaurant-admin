@@ -24,7 +24,7 @@ export default class SignIn extends Component {
     signIn(email, password).then((respone) => {
       const token = respone.data.jwt;
       localStorage.setItem("Auth_token", token);
-      this.props.history.push("/dashboard");
+      this.props.history.push("/orders");
     });
   };
 

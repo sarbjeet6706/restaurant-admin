@@ -16,12 +16,11 @@ function App() {
     <div className="App">
       <ToastContainer hideProgressBar={true} />
       <Switch>
-        <Route path="/sign-in" exact component={SignIn} />
+        <Route path="/" exact component={SignIn} />
         <Main>
           <PrivateRoute exact path="/dashboard" component={Home} />
           <PrivateRoute exact path="/orders" component={Orders} />
           <PrivateRoute exact path="/reservation" component={Reservation} />
-          <Route from="*" to="/dashboard" />
         </Main>
       </Switch>
     </div>
