@@ -240,7 +240,8 @@ const Home = () => {
           <Col xs="24" xl={24}>
             <Row justify="space-between" align="center">
               <Col span={10}>
-                <Row type="flex" gutter={10}>
+                Food Menu items
+                {/* <Row type="flex" gutter={10}>
                   <Col span={16}>
                     <Input
                       placeholder="Enter food item name and search"
@@ -253,7 +254,7 @@ const Home = () => {
                       Search
                     </Button>
                   </Col>
-                </Row>
+                </Row> */}
               </Col>
               <Col>
                 <Button type="primary" size="small" onClick={() => showModal()}>
