@@ -84,8 +84,12 @@ export const addFoodItems = (params) => {
 };
 
 // fetch food items from api
-export const getFoodItems = (pageNo, perPage) => {
-  const url = `${process.env.REACT_APP_SERVER_URL}/food-items?populate=categories&pagination[page]=${pageNo}&pagination[pageSize]=${perPage}`;
+export const getFoodItems = (pageNo, perPage, name) => {
+  const url = `${
+    process.env.REACT_APP_SERVER_URL
+  }/food-items?populate=categories&pagination[page]=${pageNo}&pagination[pageSize]=${perPage}${
+    name ? `&filters[food_item_name][$contains]=${name}` : ""
+  }`;
   return axios.get(url);
 };
 

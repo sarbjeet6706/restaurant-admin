@@ -26,6 +26,7 @@ import TextArea from "antd/lib/input/TextArea";
 
 import confirm from "antd/lib/modal/confirm";
 const { Option } = Select;
+const { Search } = Input;
 
 const Home = () => {
   // table code start
@@ -90,6 +91,7 @@ const Home = () => {
   const [pageNo, setPageNo] = useState(1);
   const [perPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     fetchMenuData(pageNo);
@@ -97,9 +99,9 @@ const Home = () => {
   }, []);
 
   // fetch the menu data
-  const fetchMenuData = (currPage) => {
+  const fetchMenuData = (currPage, searchText) => {
     setListProcessing(true);
-    getFoodItems(currPage, perPage)
+    getFoodItems(currPage, perPage, searchText)
       .then((res) => {
         if (res && res.data && res.data.data && res.data.data.length > 0) {
           const foodItems = res.data.data;
@@ -224,8 +226,11 @@ const Home = () => {
   };
 
   const onPageChange = (pageNo) => {
-    fetchMenuData(pageNo);
+    fetchMenuData(pageNo, searchText);
     setPageNo(pageNo);
+  };
+  const handleSearch = () => {
+    fetchMenuData(1, searchText);
   };
 
   return (
@@ -234,8 +239,21 @@ const Home = () => {
         <Row gutter={[24, 0]}>
           <Col xs="24" xl={24}>
             <Row justify="space-between" align="center">
-              <Col>
-                <h2>Menu Table</h2>
+              <Col span={10}>
+                <Row type="flex" gutter={10}>
+                  <Col span={16}>
+                    <Input
+                      placeholder="Enter food item name and search"
+                      value={searchText}
+                      onChange={(e) => setSearchText(e.target.value)}
+                    />
+                  </Col>
+                  <Col>
+                    <Button type="primary" onClick={handleSearch}>
+                      Search
+                    </Button>
+                  </Col>
+                </Row>
               </Col>
               <Col>
                 <Button type="primary" size="small" onClick={() => showModal()}>
